@@ -206,6 +206,4 @@ public class AllExamsActivity extends ListActivity {
         pDialog.dismiss();
         super.onDestroy();
     }
-
-    
 }

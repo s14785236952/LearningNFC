@@ -1,14 +1,17 @@
 package com.example.user.learningnfc;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -21,7 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditNFCActivity extends AppCompatActivity {
-
+    TextView learn_tag,learn_name,learn_desc;
+    ImageView img;
+    private String image;
     // Progress Dialog
     private ProgressDialog pDialog;
     String pid;
@@ -44,6 +49,8 @@ public class EditNFCActivity extends AppCompatActivity {
 
     // url to delete product
     private static final String url_delete_learning = "http://163.21.245.192/android_connect/delete_learning.php";
+
+    private static final String url_learning_details = "http://163.21.245.192/android_connect/get_learning_details.php";
 
 
     // JSON Node names
@@ -316,5 +323,114 @@ public class EditNFCActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    class GetLearnDetails extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(EditNFCActivity.this);
+            pDialog.setMessage("請稍候...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Getting product details in background thread
+         * */
+        protected String doInBackground(String... params) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+                    int success;
+                    try {
+                        // Building Parameters
+                        List<NameValuePair> params = new ArrayList<NameValuePair>();
+                        params.add(new BasicNameValuePair("learn_id", pid));
+
+                        // getting product details by making HTTP request
+                        // Note that product details url will use GET request
+                        JSONObject json = jsonParser.makeHttpRequest(
+                                url_learning_details, "GET", params);
+
+                        // check your log for json response
+                        Log.d("Single Leanring Details", json.toString());
+
+                        // json success tag
+                        success = json.getInt("success");
+                        if (success == 1) {
+                            // successfully received product details
+                            JSONArray productObj = json
+                                    .getJSONArray("learning"); // JSON Array
+
+                            // get first product object from JSON Array
+                            JSONObject product = productObj.getJSONObject(0);
+                            learn_name = (TextView)findViewById(R.id.learn_name);
+                            learn_tag = (TextView)findViewById(R.id.learn_tag);
+                            learn_desc = (TextView)findViewById(R.id.learn_desc);
+                            learn_tag.setText(product.getString("tag"));
+                            learn_name.setText(product.getString("name"));
+                            learn_desc.setText(product.getString("description"));
+
+                            image = product.getString("image");
+                            img = (ImageView)findViewById(R.id.img_learn);
+                            img.setImageBitmap(ImgUtils.getBitmapFromURL("http://163.21.245.192/android_connect/uploadedimages/"+image));
+
+                        }else{
+                            // product with pid not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once got all details
+            pDialog.dismiss();
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
+            new android.support.v7.app.AlertDialog.Builder(EditNFCActivity.this)
+                    .setTitle("確認視窗")
+                    .setMessage("確定要結束應用程式嗎?")
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setPositiveButton("確定",
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    finish();
+                                }
+                            })
+                    .setNegativeButton("取消",
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    // TODO Auto-generated method stub
+
+                                }
+                            }).show();
+        }
+        return true;
     }
 }
