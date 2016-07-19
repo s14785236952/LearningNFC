@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:id="@+id/button"
+            android:layout_weight="0.5"/>
+
+        <!-- <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="下一頁"
+             android:id="@+id/buttonnorth"
+             android:layout_weight="0.5" />-->
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="357dp"
+        android:layout_height="211dp"
+        android:text="@string/bios"
+        android:id="@+id/bios"
+        android:textSize = "24sp"
+        android:layout_weight="0.08" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="190dp"
+        android:id="@+id/biosview"
+        android:src="@drawable/bios"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

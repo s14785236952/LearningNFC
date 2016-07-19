@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.user.learningnfc.EditNFCActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <!-- Exam Label -->
+                <TextView android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="學習名稱:"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:textSize="17dip"
+                    android:layout_marginTop="0dp"/>
+
+
+                <EditText android:id="@+id/inputName_nfc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:layout_marginBottom="15dip"
+                    android:lines="2"/>
+
+                <!-- homework Label -->
+                <TextView android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="學習內容:"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:textSize="17dip"
+                    android:lines="4"/>
+
+
+                <EditText android:id="@+id/inputdesc_nfc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:layout_marginBottom="15dip"
+                    android:singleLine="true"/>
+
+                <TextView android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tag:"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:textSize="17dip"/>
+
+                <EditText android:id="@+id/inputtag_nfc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip"
+                    android:layout_marginBottom="15dip"
+                    android:singleLine="true"/>
+
+
+                <LinearLayout android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button android:id="@+id/btnSave_nfc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="儲存變更"
+                        android:layout_weight="1"/>
+
+
+                    <Button android:id="@+id/btnDelete_nfc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="刪除"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </TableLayout>
+
+</RelativeLayout>

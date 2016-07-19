@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">LearningNFC</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">登出</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="facebook_app_id">297068007296347</string>
+    <string name="title_activity_exam">ExamActivity</string>
+    <string name="title_activity_manange">ManangeActivity</string>
+    <string name="title_activity_all_exams">AllExamsActivity</string>
+    <string name="title_activity_edit_product">EditProductActivity</string>
+    <string name="title_activity_new_product">NewProductActivity</string>
+    <string name="title_activity_all_exams_activtiy">AllExamsActivtiy</string>
+    <string name="title_activity_edit_exam">EditExamActivity</string>
+    <string name="title_activity_learn">LearnActivity</string>
+    <string name="CPUSocket">CPU插座，是電腦裡主機板上固定住CPU並導通電氣訊號的一種插座。
+        主機板一定有個插槽放CPU，不同的主機板通常會有不同的CPU插槽型式，以支援不同的CPU。
+        而在左下方有一個4個洞的白色插槽，那是給CPU供電用的</string>
+    <string name="introduce">藉由NFC來了解主機板的構造，請將手機移至感應處。</string>
+    <string name="cpu">CPU是Central Processing Unit「中央處理單元」之簡稱，它是使整部電腦能夠運作的最核心、最重要的元件。
+        CPU的作用是什麼呢？ 當電腦系統開始運作時，CPU從記憶體內，讀取操作它的軟體的指令與資料，透過ALU運算出結果後存回記憶體，
+        同時藉由主機板，與外界的I/O週邊溝通。</string>
+    <string name="dram">這長條狀的插槽就是插記憶體用的，一般主機板會有2～4條，或更多，緊鄰著CPU和北橋晶片。</string>
+    <string name="ram">記憶體的作用是在於讓CPU做運算處理的工作，必須要用一個可以暫時存放運算資料的地方，而運算過程當中
+    所產生的資料是不需要被儲存的，只是一個暫時性的資料，所以就需要有一個地方給他做暫存的動作，這個地方就是記憶體。</string>
+    <string name="north">北橋是主機板上最重要的晶片，主要是控制CPU、記憶體、AGP或PCI-E×16插槽(顯示卡專用)等設備的高速整合晶片，
+        其傳輸速度可達每秒數GB來計算的，比如CPU（8～10 GB/s），與南橋晶片兩顆合稱晶片組，越高級的北橋晶片支援的CPU、
+        記憶體的頻率越高</string>
+    <string name="south">和北橋互連並連接其他週邊，我們熟知的主機板「功能」大多來自南橋，南橋連接慢速週邊，傳輸速度以每秒數MB來計算，
+        例如鍵盤滑鼠、印表機、USB、網路、音效、SATA/IDE硬碟。</string>
+    <string name="cards">雖然某些主機板已經內建了「所有」必要的東西，比如網路、音效、甚至顯示晶片，但還是有擴充的需求，這些插槽就是拿來裝別的卡，
+        例如電視卡或是插無線網卡等等，最常見的，就是插一張顯示卡。</string>
+    <string name="os">藍色小插槽和黃色長一堆針的，都是連接硬碟或光碟機用的，藍色的是SATA、黃色的是IDE（或叫PATA），
+        現在IDE通常只有光碟在用了，硬碟幾乎快全面轉換到SATA了。左邊那堆黃綠紅的小針腳是連接機殼用的，
+        比如機殼上的USB、電源鍵、燈號等等。</string>
+    <string name="ip">這些主機板本身功能的輸出輸入口。主要有USB和網路插孔等等。</string>
+    <string name="bios">BIOS（Basic Input/Output System），有點像是主機板內建的「軟體」，用來辨識主機板上的各式裝置，
+        調整各種設定，再交給作業系統啟動，BIOS是開機過程中的第一步，BIOS辨識完畢之後再給作業系統接手。</string>
+    <string name="pc">南北橋要吃電、記憶體要吃電、顯示卡要吃電，就連USB也要吃電（雖然不多），而電就從這個20或24針的電源插座進來，供電給整張主機板。
+        這插槽是給電源供應器插的地方，就像主機板其他有電源輸入的地方一樣，旁邊一定有電容排排站。</string>
+    <string name="title_activity_exam_go">ExamGoActivity</string>
+    <string name="title_activity_home_work">HomeWorkActivity</string>
+    <string name="title_activity_create_nfc">CreateNFCActivity</string>
+</resources>

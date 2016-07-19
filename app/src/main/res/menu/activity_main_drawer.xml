@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">'
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_Learning"
+            android:icon="@drawable/ic_menu_learn"
+            android:title="Learn" />
+        <item
+            android:id="@+id/nav_homework"
+            android:icon="@drawable/ic_menu_learn"
+            android:title="Homework" />
+        <item
+            android:id="@+id/nav_exam"
+            android:icon="@drawable/ic_menu_exam"
+            android:title="Examination" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="manage" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_history"
+            android:title="History" />
+    </group>
+
+
+</menu>

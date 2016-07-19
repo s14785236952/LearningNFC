@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.user.learningnfc.ManangeActivity"
+    tools:showIn="@layout/app_bar_manange">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!--  Sample Dashboard screen with Two buttons -->
+        <!--  Button to view all products screen -->
+        <Button android:id="@+id/btnViewProducts"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="瀏覽試題"
+            android:layout_marginTop="25dip"/>
+
+        <!--  Button to create a new product screen -->
+        <Button android:id="@+id/btnCreateProduct"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="新增試題"
+            android:layout_marginTop="25dip"/>
+
+        <Button android:id="@+id/btnViewNFC"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="瀏覽學習內容"
+            android:layout_marginTop="25dip"/>
+
+        <Button android:id="@+id/btnCreateNFC"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="新增學習內容"
+            android:layout_marginTop="25dip"/>
+
+        <Button android:id="@+id/btnViewHomework"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="瀏覽作業"
+            android:layout_marginTop="25dip"/>
+
+        <Button android:id="@+id/btnHomework"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="新增作業"
+            android:layout_marginTop="25dip"/>
+
+        <Button android:id="@+id/btnManageLearn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="NFC卡片管理"
+            android:layout_marginTop="25dip"/>
+
+        <Button android:id="@+id/btnStudentsHistory"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="學生歷程紀錄"
+            android:layout_marginTop="25dip"/>
+
+
+
+    </LinearLayout>
+    </ScrollView>
+    </TableLayout>
+
+</RelativeLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:id="@+id/button"
+            android:layout_weight="0.5"/>
+
+        <!-- <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="下一頁"
+             android:id="@+id/buttonnorth"
+             android:layout_weight="0.5" />-->
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="373dp"
+        android:layout_height="136dp"
+        android:text="@string/ip"
+        android:id="@+id/ip"
+        android:textSize = "24sp" />
+
+    <ImageView
+        android:layout_width="327dp"
+        android:layout_height="253dp"
+        android:id="@+id/ipview"
+        android:src="@drawable/ip"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.user.learningnfc">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ExamActivity"
+            android:label="@string/title_activity_exam"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ManangeActivity"
+            android:label="@string/title_activity_manange"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AllExamsActivity"
+            android:label="@string/title_activity_all_exams"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NewProductActivity"
+            android:label="@string/title_activity_new_product"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditExamActivity"
+            android:label="@string/title_activity_edit_exam"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LearnActivity"
+            android:label="@string/title_activity_learn"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/filter_nfc" />
+        </activity>
+        <activity
+            android:name=".ExamGoActivity"
+            android:label="@string/title_activity_exam_go"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ResultActivity" />
+        <activity android:name=".ResultForAnswerActivity" />
+        <activity
+            android:name=".HomeworkActivity"
+            android:label="@string/title_activity_home_work"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NewHomeworkActivity" />
+        <activity android:name=".AllHomeworksActivity" />
+        <activity android:name=".EditHomeworkActivity" />
+        <activity android:name=".UnfinishworkActivity" />
+        <activity android:name=".FinishedworkActivity" />
+        <activity android:name=".NewNFCActivity" />
+        <activity android:name=".NewImageActivity" />
+        <activity android:name=".AllNFCActivity" />
+        <activity android:name=".AllNFCtoEditNFCActivity" />
+        <activity android:name=".EditNFCActivity" />
+        <activity android:name=".ManageLearnActivity" />
+        <activity android:name=".StudentsHistoryActivity" />
+        <activity android:name=".StudentsWrongExamsActivity" />
+        <activity android:name=".WhatStudentsWrongActivity" />
+    </application>
+
+</manifest>
