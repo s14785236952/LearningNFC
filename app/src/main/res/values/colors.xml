@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="dimmer_color">#19000000</color>
+    <color name="black_color">#FF282624</color>
+    <color name="gray_color">#FF8C8783</color>
+    <color name="white_color">#FFFCFCFC</color>
 </resources>

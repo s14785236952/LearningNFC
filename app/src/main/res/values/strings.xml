@@ -15,6 +15,7 @@
     <string name="title_activity_all_exams_activtiy">AllExamsActivtiy</string>
     <string name="title_activity_edit_exam">EditExamActivity</string>
     <string name="title_activity_learn">LearnActivity</string>
+    <string name="title_activity_commentsboard">留言板</string>
     <string name="CPUSocket">CPU插座，是電腦裡主機板上固定住CPU並導通電氣訊號的一種插座。
         主機板一定有個插槽放CPU，不同的主機板通常會有不同的CPU插槽型式，以支援不同的CPU。
         而在左下方有一個4個洞的白色插槽，那是給CPU供電用的</string>
