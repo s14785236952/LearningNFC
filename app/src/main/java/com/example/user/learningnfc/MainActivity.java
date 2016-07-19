@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         }
         new DownloadImage((ImageView) v.findViewById(R.id.profileImage)).execute(imageUrl);
 
-        if (Profile.getCurrentProfile().getId().equals("1067218249991918")) {
+        if (Profile.getCurrentProfile().getId().equals("1067218249991918")||Profile.getCurrentProfile().getId().equals("100001812589624")) {
             new CreateUser().execute(Profile.getCurrentProfile().getId(), Profile.getCurrentProfile().getLastName() + Profile.getCurrentProfile().getFirstName(), "2");
             privilege = 2;
         }  else {
