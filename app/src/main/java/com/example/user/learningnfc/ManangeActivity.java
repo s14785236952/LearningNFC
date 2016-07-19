@@ -196,10 +196,7 @@ public class ManangeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            logout();
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -233,7 +230,12 @@ public class ManangeActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_history) {
-
+            Intent intent = new Intent();
+            intent.setClass(ManangeActivity.this, OthersActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_logout) {
+            logout();
         }
 
 

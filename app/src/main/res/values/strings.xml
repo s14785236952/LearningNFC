@@ -44,4 +44,5 @@
     <string name="title_activity_exam_go">ExamGoActivity</string>
     <string name="title_activity_home_work">HomeWorkActivity</string>
     <string name="title_activity_create_nfc">CreateNFCActivity</string>
+    <string name="title_activity_others">OthersActivity</string>
 </resources>

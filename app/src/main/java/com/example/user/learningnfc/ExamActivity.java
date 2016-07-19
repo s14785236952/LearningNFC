@@ -92,11 +92,6 @@ public class ExamActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            logout();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -130,7 +125,12 @@ public class ExamActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_history) {
-
+            Intent intent = new Intent();
+            intent.setClass(ExamActivity.this, OthersActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_logout) {
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

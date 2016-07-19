@@ -114,11 +114,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            logout();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -152,7 +147,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_history) {
-
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this, OthersActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_logout) {
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

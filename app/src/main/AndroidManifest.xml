@@ -83,10 +83,16 @@
         <activity android:name=".StudentsHistoryActivity" />
         <activity android:name=".StudentsWrongExamsActivity" />
         <activity android:name=".WhatStudentsWrongActivity" />
-        <activity
-            android:name=".CommentsActivity"
+        <activity android:name=".CommentsActivity"
             android:label="@string/title_activity_commentsboard"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".OthersActivity"
+            android:label="@string/title_activity_others"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".ViewHistoryActivity" />
+        <activity android:name=".RankScoreActivity"/>
     </application>
 
 </manifest>

@@ -1,12 +1,9 @@
 package com.example.user.learningnfc;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,22 +14,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 
-public class HomeworkActivity extends AppCompatActivity
+public class OthersActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    Button btn_unfinish ;
-    Button btn_finished ;
+    Button btnViewHistory,btnRankLearn,btnRankScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_work);
+        setContentView(R.layout.activity_others);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,36 +35,28 @@ public class HomeworkActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View v = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
-
-        new DownloadImage((ImageView) v.findViewById(R.id.profileImage)).execute(MainActivity.imageUrl);
-        TextView nametext = (TextView) v.findViewById(R.id.nameAndSurname);
-        nametext.setText("" + Profile.getCurrentProfile().getLastName()+Profile.getCurrentProfile().getFirstName());
-
-        btn_unfinish =  (Button)findViewById(R.id.btn_unfinishwork);
-        btn_finished = (Button)findViewById(R.id.btn_finishedwork);
-
-        btn_unfinish.setOnClickListener(new View.OnClickListener() {
+        btnViewHistory = (Button)findViewById(R.id.btnViewHistory);
+        btnViewHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(HomeworkActivity.this , UnfinishworkActivity.class);
-                startActivity(i);
+                Intent intent = new Intent();
+                intent.setClass(OthersActivity.this, ViewHistoryActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
 
-        btn_finished.setOnClickListener(new View.OnClickListener() {
+        btnRankScore = (Button)findViewById(R.id.btnRankScore);
+        btnRankScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(HomeworkActivity.this , FinishedworkActivity.class);
-                startActivity(i);
+                Intent intent = new Intent();
+                intent.setClass(OthersActivity.this, RankScoreActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
-
     }
 
     @Override
@@ -86,7 +72,7 @@ public class HomeworkActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home_work, menu);
+        getMenuInflater().inflate(R.menu.others, menu);
         return true;
     }
 
@@ -97,7 +83,10 @@ public class HomeworkActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -110,31 +99,31 @@ public class HomeworkActivity extends AppCompatActivity
 
         if (id == R.id.nav_Learning) {
             Intent intent = new Intent();
-            intent.setClass(HomeworkActivity.this, LearnActivity.class);
+            intent.setClass(OthersActivity.this, LearnActivity.class);
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_homework) {
-
+            Intent intent = new Intent();
+            intent.setClass(OthersActivity.this, HomeworkActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_exam) {
             Intent intent = new Intent();
-            intent.setClass(HomeworkActivity.this, ExamActivity.class);
+            intent.setClass(OthersActivity.this, ExamActivity.class);
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent();
-            intent.setClass(HomeworkActivity.this, ManangeActivity.class);
+            intent.setClass(OthersActivity.this, ManangeActivity.class);
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_home) {
             Intent intent = new Intent();
-            intent.setClass(HomeworkActivity.this, MainActivity.class);
+            intent.setClass(OthersActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_history) {
-            Intent intent = new Intent();
-            intent.setClass(HomeworkActivity.this, HomeworkActivity.class);
-            startActivity(intent);
-            finish();
+
         }else if (id == R.id.nav_logout) {
             logout();
         }
@@ -143,44 +132,12 @@ public class HomeworkActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
 
-        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
-            new AlertDialog.Builder(HomeworkActivity.this)
-                    .setTitle("確認視窗")
-                    .setMessage("確定要結束應用程式嗎?")
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setPositiveButton("確定",
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    finish();
-                                }
-                            })
-                    .setNegativeButton("取消",
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    // TODO Auto-generated method stub
-
-                                }
-                            }).show();
-        }
-        return true;
-    }
 
     public void logout() {
         LoginManager.getInstance().logOut();
-        Intent login = new Intent(HomeworkActivity.this, WelcomeActivity.class);
+        Intent login = new Intent(OthersActivity.this, WelcomeActivity.class);
         startActivity(login);
         finish();
     }
-
-
 }
