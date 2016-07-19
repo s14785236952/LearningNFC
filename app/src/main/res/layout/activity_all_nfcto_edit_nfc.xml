@@ -93,6 +93,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="修改學習內容"/>
+
+        <Button android:id="@+id/comments_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="留言板"/>
 </LinearLayout>
     </ScrollView>
     </TableLayout>

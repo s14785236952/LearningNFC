@@ -34,8 +34,9 @@ public class AllNFCtoEditNFCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_nfcto_edit_nfc);
-        Button btnEditImage = (Button)findViewById(R.id.btnEditImage);
-        Button btnEditNFC =(Button)findViewById(R.id.btnEditNFC);
+        Button btnEditImage = (Button) findViewById(R.id.btnEditImage);
+        Button btnEditNFC = (Button) findViewById(R.id.btnEditNFC);
+        Button btnCommentsBoard = (Button) findViewById(R.id.comments_btn);
 
         new GetLearnDetails().execute();
 
@@ -62,6 +63,17 @@ public class AllNFCtoEditNFCActivity extends AppCompatActivity {
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(),
                         EditNFCActivity.class);
+                // sending pid to next activity
+                in.putExtra("learn_id", pid);
+                startActivityForResult(in, 100);
+            }
+        });
+
+        btnCommentsBoard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(),
+                        CommentsActivity.class);
                 // sending pid to next activity
                 in.putExtra("learn_id", pid);
                 startActivityForResult(in, 100);

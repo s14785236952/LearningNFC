@@ -83,6 +83,10 @@
         <activity android:name=".StudentsHistoryActivity" />
         <activity android:name=".StudentsWrongExamsActivity" />
         <activity android:name=".WhatStudentsWrongActivity" />
+        <activity
+            android:name=".CommentsActivity"
+            android:label="@string/title_activity_commentsboard"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
