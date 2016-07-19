@@ -18,14 +18,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -106,7 +104,7 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
     private static String url_all_learnings = "http://163.21.245.192/android_connect/get_all_learnings.php";
     private static String url_create_item = "http://163.21.245.192/android_connect/create_item.php";
     private static String url_all_items = "http://163.21.245.192/android_connect/get_all_items.php";
-    private static String url_update_item = "http://163.21.245.192/android_connect/update_items.php";
+    private static String url_update_item = "http://163.21.245.192/android_connect/update_item.php";
     private static String url_get_item_details = "http://163.21.245.192/android_connect/get_item_details.php";
 
 
@@ -352,10 +350,6 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
         mAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return false;
-    }
 
 
 
@@ -710,9 +704,9 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
                 } else {
                     // failed to update product
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+             }catch(JSONException e){
+            Log.e("log_tag", "Error parsing data "+e.toString());
+        }
 
             return null;
         }
@@ -810,6 +804,74 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_Learning) {
+        } else if (id == R.id.nav_homework) {
+            Intent intent = new Intent();
+            intent.setClass(LearnActivity.this, HomeworkActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_exam) {
+            Intent intent = new Intent();
+            intent.setClass(LearnActivity.this, ExamActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent();
+            intent.setClass(LearnActivity.this, ManangeActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_home) {
+            Intent intent = new Intent();
+            intent.setClass(LearnActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_history) {
+            Intent intent = new Intent();
+            intent.setClass(LearnActivity.this, OthersActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_logout) {
+            logout();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
 
@@ -839,5 +901,12 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
                             }).show();
         }
         return true;
+    }
+
+    public void logout() {
+        LoginManager.getInstance().logOut();
+        Intent login = new Intent(LearnActivity.this, WelcomeActivity.class);
+        startActivity(login);
+        finish();
     }
 }
