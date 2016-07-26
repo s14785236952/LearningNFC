@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -59,6 +60,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LearnActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mViewAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private List<Comments> commentList = new ArrayList<>();
     TextView learn_tag2,learn_name2,learn_desc2;
     ImageView img2;
     private Button about;
@@ -71,7 +77,7 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
     private Button mBtn;
     private AlertDialog dialog;
     private Context context;
-    Button btnBack2;
+    Button btnBack2,btnComments;
     CharSequence getEnterAcitvityTime,getLeaveAcitvityTime;
     // Creating JSON Parser object
     JSONParser jParser = new JSONParser();
@@ -111,8 +117,8 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
     public static long learningTime_local ;
     public static String watch_time_local;
     public static String watch_numbers_local;
-    public static String descriptionOfStudent = "很好很好";
-    public static String evaluation = "5";
+    public static String descriptionOfStudent="";
+    public static String evaluation = "";
     // 關閉 NFC tag 寫入模式
     private void disableTagWriteMode() {
         mAdapter.disableForegroundDispatch(this);
@@ -300,11 +306,15 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
 
                                     }else {
                                         if (j == products.length()-1){
-                                            int watch_numbers_final = Integer.valueOf(watch_numbers_local);
+                                            watch_numbers_local = "0";
+                                            watch_time_local = "0";
+                                            int watch_numbers_final = 0;
+                                            watch_numbers_final =Integer.valueOf(watch_numbers_local);
                                             watch_numbers_final++;
                                             watch_numbers_local = String.valueOf(watch_numbers_final);
 
-                                            long watch_time_final = Integer.valueOf(watch_time_local);
+                                            long watch_time_final = 0;
+                                            watch_time_final = Integer.valueOf(watch_time_local);
                                             watch_time_final += sec ;
                                             watch_time_local = String.valueOf(watch_time_final);
                                             Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
@@ -329,6 +339,20 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
 
                         }
                     });
+                    btnComments = (Button)findViewById(R.id.btnComments);
+                    btnComments.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent();
+                            i.setClass(LearnActivity.this , CommentsActivity.class);
+                            i.putExtra("learn_id" , learn_id);
+                            i.putExtra("descriptionOfStudent" , descriptionOfStudent);
+                            i.putExtra("evaluation",evaluation);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
+
 
                 }
             }
@@ -720,7 +744,7 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    class GetItemDetails extends AsyncTask<String, String, String> {
+    public class GetItemDetails extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog

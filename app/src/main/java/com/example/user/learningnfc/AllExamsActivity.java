@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,24 +17,32 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.content.Context;
 
-public class AllExamsActivity extends ListActivity {
+public class AllExamsActivity extends Activity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
 
     // Creating JSON Parser object
     JSONParser jParser = new JSONParser();
-
     ArrayList<HashMap<String, String>> productsList;
+    private GroupListAdapter adapter = null;
+    private ListView lv = null;
+    private List<String> list = new ArrayList<String>();
+    private List<String> listTag = new ArrayList<String>();
 
     // url to get all products list
     private static String url_all_products = "http://163.21.245.192/android_connect/get_all_products.php";
@@ -46,6 +55,10 @@ public class AllExamsActivity extends ListActivity {
 
     // products JSONArray
     JSONArray products = null;
+    private static String[] A = new String[301];
+    private  int[] getPosition = new int[301];
+    int k=1;
+    private  int id=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,36 +67,32 @@ public class AllExamsActivity extends ListActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        // Hashmap for ListView
-        productsList = new ArrayList<HashMap<String, String>>();
-
         // Loading products in Background Thread
         new LoadAllProducts().execute();
-
-        // Get listview
-        ListView lv = getListView();
-
-        // on seleting single product
-        // launching Edit Product Screen
+        setData();
+        adapter = new GroupListAdapter(this, list, listTag);
+        lv = (ListView)findViewById(R.id.group_list);
+        lv.setAdapter(adapter);
         lv.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // getting values from selected ListItem
-                String pid = ((TextView) view.findViewById(R.id.pid)).getText()
-                        .toString();
 
-                // Starting new intent
+
+                    Log.d("position","is"+getPosition[position]+" and id is "+id);
+                String pid = Integer.toString(getPosition[position]);
                 Intent in = new Intent(getApplicationContext(),
                         EditExamActivity.class);
                 // sending pid to next activity
-                in.putExtra(TAG_PID, pid);
+                in.putExtra(TAG_PID,pid);
 
                 // starting new activity and expecting some response back
-                startActivityForResult(in, 100);
+                startActivityForResult(in, 101);
             }
         });
+
+
 
     }
 
@@ -148,18 +157,16 @@ public class AllExamsActivity extends ListActivity {
                         // Storing each json item in variable
                         String id = c.getString(TAG_PID);
                         String name = c.getString(TAG_NAME);
-
-                        // creating new HashMap
-                        HashMap<String, String> map = new HashMap<String, String>();
-
-                        // adding each child node to HashMap key => value
-                        map.put(TAG_PID, id);
-                        map.put(TAG_NAME, name);
-
-                        // adding HashList to ArrayList
-                        productsList.add(map);
+                        String suggest = c.getString("suggest");
+                        Log.d("suggest", suggest);
+                            A[k] = id;
+                            A[k+1] = name;
+                            A[k+2] = suggest;
+                            Log.d("AAAAA",A[k]);
+                            k+=3;
 
                     }
+
                 } else {
                     // no products found
                     // Launch Add New product Activity
@@ -172,7 +179,6 @@ public class AllExamsActivity extends ListActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
@@ -182,28 +188,217 @@ public class AllExamsActivity extends ListActivity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
-            // updating UI from Background Thread
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    /**
-                     * Updating parsed JSON data into ListView
-                     * */
-                    ListAdapter adapter = new SimpleAdapter(
-                            AllExamsActivity.this, productsList,
-                            R.layout.list_item, new String[] { TAG_PID,
-                            TAG_NAME},
-                            new int[] { R.id.pid, R.id.name });
-                    // updating listview
-                    setListAdapter(adapter);
-                }
-            });
-
         }
 
     }
     @Override
     protected void onDestroy() {
-        pDialog.dismiss();
+        //pDialog.dismiss();
         super.onDestroy();
     }
+    public void setData(){
+        list.add("主機板");
+        listTag.add("主機板");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("主機板")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+
+                }
+            }
+        }
+        list.add("CPU");
+        listTag.add("CPU");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("CPU")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+        list.add("音效");
+        listTag.add("音效");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("音效")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("記憶體");
+        listTag.add("記憶體");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("記憶體")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("電源");
+        listTag.add("電源");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("電源")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("顯示卡");
+        listTag.add("顯示卡");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("顯示卡")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("硬碟");
+        listTag.add("硬碟");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("硬碟")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("網路");
+        listTag.add("網路");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("網路")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("輸入裝置");
+        listTag.add("輸入裝置");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("輸入裝置")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("輸出裝置");
+        listTag.add("輸出裝置");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("輸出裝置")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+
+        list.add("機殼");
+        listTag.add("機殼");
+        getPosition[id] = id;
+        id++;
+        for(int i=1;i<301;i+=3){
+            if (A[i]==null){
+                break;
+            }else {
+                if (A[i + 2].equals("機殼")) {
+                    list.add(A[i + 1]);
+                    getPosition[id] = Integer.parseInt(A[i]);
+                    id++;
+                }
+            }
+        }
+    }
+    private static class GroupListAdapter extends ArrayAdapter<String>{
+
+        private List<String> listTag = null;
+        public GroupListAdapter(Context context, List<String> objects, List<String> tags) {
+            super(context, 0, objects);
+            this.listTag = tags;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            if(listTag.contains(getItem(position))){
+                return false;
+            }
+            return super.isEnabled(position);
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if(listTag.contains(getItem(position))){
+                view = LayoutInflater.from(getContext()).inflate(R.layout.group_list_item_tag, null);
+            }else{
+                view = LayoutInflater.from(getContext()).inflate(R.layout.group_list_item, null);
+            }
+            TextView textView = (TextView) view.findViewById(R.id.group_list_item_text);
+            textView.setText(getItem(position));
+            return view;
+        }
+    }
+
 }

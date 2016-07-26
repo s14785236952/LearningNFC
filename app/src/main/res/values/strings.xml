@@ -45,4 +45,8 @@
     <string name="title_activity_home_work">HomeWorkActivity</string>
     <string name="title_activity_create_nfc">CreateNFCActivity</string>
     <string name="title_activity_others">OthersActivity</string>
+    <string name="comments">註解</string>
+    <string name="ok">留言</string>
+    <string name="notok">取消</string>
+    <string name="newcomments">留下你的註解</string>
 </resources>

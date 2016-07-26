@@ -11,14 +11,19 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class EditExamActivity extends Activity {
 
@@ -29,7 +34,6 @@ public class EditExamActivity extends Activity {
     EditText txtopc;
     EditText txtopd;
     EditText txtdesc;
-    EditText txtsuggest;
     EditText inputName;
     EditText inputanswer;
     EditText inputopa;
@@ -37,11 +41,17 @@ public class EditExamActivity extends Activity {
     EditText inputopc;
     EditText inputopd;
     EditText inputdesc;
-    EditText inputsuggest;
+    TextView actionText,actionText_first;
     Button btnSave;
     Button btnDelete;
 
      String pid;
+
+    private Spinner spinner;
+    private ArrayAdapter<String> actionList;
+    private Context mContext;
+    private String[] suggest  = {"主機板","CPU","音效","記憶體","電源","顯示卡","硬碟","網路","輸入裝置","輸出裝置","機殼"};
+    public static String species;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -75,6 +85,23 @@ public class EditExamActivity extends Activity {
         btnSave = (Button) findViewById(R.id.btnSave);
         btnDelete = (Button) findViewById(R.id.btnDelete);
 
+        actionText = (TextView)findViewById(R.id.actionText_exam);
+        spinner = (Spinner)findViewById(R.id.inputaction_exam);
+        actionList = new ArrayAdapter<>(EditExamActivity.this, android.R.layout.simple_spinner_item, suggest);
+        spinner.setAdapter(actionList);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+                species = suggest[position];
+                actionText.setText("你後來選的類別是："+species);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
         // getting product details from intent
         Intent i = getIntent();
 
@@ -87,7 +114,6 @@ public class EditExamActivity extends Activity {
         inputopc = (EditText) findViewById(R.id.inputopc);
         inputopd = (EditText) findViewById(R.id.inputopd);
         inputdesc = (EditText)findViewById(R.id.inputdesc);
-        inputsuggest = (EditText)findViewById(R.id.inputsuggest);
         // Getting complete product details in background thread
         new GetProductDetails().execute();
 
@@ -104,9 +130,8 @@ public class EditExamActivity extends Activity {
                 String optionc = inputopc.getText().toString();
                 String optiond = inputopd.getText().toString();
                 String desc = inputdesc.getText().toString();
-                String suggest = inputsuggest.getText().toString();
                 // starting background task to update product
-                new SaveProductDetails().execute(name,answer,optiona,optionb,optionc,optiond,desc,suggest);
+                new SaveProductDetails().execute(name,answer,optiona,optionb,optionc,optiond,desc);
             }
         });
 
@@ -182,8 +207,7 @@ public class EditExamActivity extends Activity {
                             txtopc = (EditText)findViewById(R.id.inputopc);
                             txtopd = (EditText)findViewById(R.id.inputopd);
                             txtdesc = (EditText)findViewById(R.id.inputdesc);
-                            txtsuggest = (EditText)findViewById(R.id.inputsuggest);
-
+                            actionText_first = (TextView)findViewById(R.id.actionText_examfirst);
 
                             // display product data in EditText
                             txtName.setText(product.getString(TAG_NAME));
@@ -193,8 +217,7 @@ public class EditExamActivity extends Activity {
                             txtopc.setText(product.getString("optionc"));
                             txtopd.setText(product.getString("optiond"));
                             txtdesc.setText(product.getString(TAG_DESC));
-                            txtsuggest.setText(product.getString("suggest"));
-
+                            actionText_first.setText("你原本選的類別是："+product.getString("suggest"));
 
                         }else{
                             // product with pid not found
@@ -247,8 +270,7 @@ public class EditExamActivity extends Activity {
                     optionb = args[3],
                     optionc = args[4],
                     optiond = args[5],
-                    desc = args[6],
-                    suggest = args[7];
+                    desc = args[6];
 
 
             // Building Parameters
@@ -261,7 +283,7 @@ public class EditExamActivity extends Activity {
             params.add(new BasicNameValuePair("optionc", optionc));
             params.add(new BasicNameValuePair("optiond", optiond));
             params.add(new BasicNameValuePair(TAG_DESC, desc));
-            params.add(new BasicNameValuePair("suggest", suggest));
+            params.add(new BasicNameValuePair("suggest", species));
 
             // sending modified data through http request
             // Notice that update product url accepts POST method

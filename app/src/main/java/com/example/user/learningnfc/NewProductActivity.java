@@ -16,8 +16,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewProductActivity extends Activity {
@@ -34,7 +38,13 @@ public class NewProductActivity extends Activity {
     EditText inputopd;
     EditText inputdesc;
     EditText inputsuggest;
+    TextView actionText;
 
+    private Spinner spinner;
+    private ArrayAdapter<String> actionList;
+    private Context mContext;
+    private String[] suggest  = {"主機板","CPU","音效","記憶體","電源","顯示卡","硬碟","網路","輸入裝置","輸出裝置","機殼"};
+    public static String species;
     // url to create new product
     private static String url_create_product = "http://163.21.245.192/android_connect/create_product.php";
 
@@ -48,6 +58,23 @@ public class NewProductActivity extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        actionText = (TextView)findViewById(R.id.actionText_exam);
+        spinner = (Spinner)findViewById(R.id.inputaction_exam);
+        actionList = new ArrayAdapter<>(NewProductActivity.this, android.R.layout.simple_spinner_item, suggest);
+        spinner.setAdapter(actionList);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int position, long arg3) {
+                species = suggest[position];
+                actionText.setText("你選的類別是："+species);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         // Edit Text
         inputName = (EditText) findViewById(R.id.inputName);
         inputanswer = (EditText) findViewById(R.id.inputanswer);
@@ -73,9 +100,8 @@ public class NewProductActivity extends Activity {
                 String optionc = inputopc.getText().toString();
                 String optiond = inputopd.getText().toString();
                 String desc = inputdesc.getText().toString();
-                String suggest = inputsuggest.getText().toString();
                 // creating new product in background thread
-                new CreateNewProduct().execute(name,answer,optiona,optionb,optionc,optiond,desc,suggest);
+                new CreateNewProduct().execute(name,answer,optiona,optionb,optionc,optiond,desc);
             }
         });
     }
@@ -108,8 +134,7 @@ public class NewProductActivity extends Activity {
                     optionb = args[3],
                     optionc = args[4],
                     optiond = args[5],
-                    desc    = args[6],
-                    suggest = args[7];
+                    desc    = args[6];
 
 
             // Building Parameters
@@ -121,7 +146,7 @@ public class NewProductActivity extends Activity {
             params1.add(new BasicNameValuePair("optionc", optionc));
             params1.add(new BasicNameValuePair("optiond", optiond));
             params1.add(new BasicNameValuePair("description", desc));
-            params1.add(new BasicNameValuePair("suggest", suggest));
+            params1.add(new BasicNameValuePair("suggest", species));
 
             // getting JSON Object
             // Note that create product url accepts POST method

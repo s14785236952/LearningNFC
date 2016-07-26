@@ -29,7 +29,7 @@
         <!-- Exam Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Exam"
+            android:text="題目"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -47,7 +47,7 @@
         <!-- Price Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Answer(you can only type A , B , C or D .)"
+            android:text="答案"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -63,7 +63,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Option A"
+            android:text="選項A"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -79,7 +79,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Option B"
+            android:text="選項B"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -95,7 +95,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Option C"
+            android:text="選項C"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -111,7 +111,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Option D"
+            android:text="選項D"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -140,21 +140,32 @@
             android:layout_marginBottom="15dip"
             android:lines="4"
             android:gravity="top"/>
+
+
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="建議閱讀的學習內容:"
+            android:text="學習的類別:"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
             android:textSize="17dip"/>
-
-        <EditText android:id="@+id/inputsuggest"
+        <Spinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:lines="1"
-            android:gravity="top"/>
+            android:id="@+id/inputaction_exam"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/actionText_examfirst"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/actionText_exam"
+            />
+
 
 
         <LinearLayout android:layout_width="fill_parent"

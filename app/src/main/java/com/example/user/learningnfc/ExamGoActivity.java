@@ -9,6 +9,7 @@ import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ExamGoActivity extends AppCompatActivity {
@@ -47,7 +50,7 @@ public class ExamGoActivity extends AppCompatActivity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
-
+    CharSequence getEnterAcitvityTime,getLeaveAcitvityTime;
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_PRODUCTS = "products";
@@ -112,6 +115,7 @@ public class ExamGoActivity extends AppCompatActivity {
     String wrongExams ="";
 
     String nonselected ="你沒有作答的題目有:";
+    public static long learningTime_local ;
 
 
     @Override
@@ -125,7 +129,10 @@ public class ExamGoActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        Calendar mCal = Calendar.getInstance();
+        getEnterAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
+        Log.d("CurrentTime" , ""+getEnterAcitvityTime);
+        final Date curDate   =   new   Date(System.currentTimeMillis());
         Button btn_examsubmit = (Button)findViewById(R.id.btn_examsubmmit);
             btn_examsubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +141,13 @@ public class ExamGoActivity extends AppCompatActivity {
                     wrongExams = "";
                    wrong_exams_number = 0 ;
                    exam_score = 0 ;
+
+                    Calendar mCal = Calendar.getInstance();
+                    getLeaveAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
+                    Log.d("LeaveCurrentTime" , ""+getLeaveAcitvityTime);
+                    Date   endDate   =   new   Date(System.currentTimeMillis());
+                    learningTime_local = endDate.getTime() - curDate.getTime() ;
+                    Long sec=learningTime_local/1000;
                     mylist.add(Profile.getCurrentProfile().getLastName());
                     mylist.add(Profile.getCurrentProfile().getFirstName());
                     wrongExams += Profile.getCurrentProfile().getLastName();
