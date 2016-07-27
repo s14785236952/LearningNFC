@@ -60,22 +60,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LearnActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mViewAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
-    private List<Comments> commentList = new ArrayList<>();
     TextView learn_tag2,learn_name2,learn_desc2;
     ImageView img2;
-    private Button about;
     private NfcAdapter mAdapter;
     public static String value;
     private PendingIntent mPendingIntent;
     private IntentFilter[] mFilters;
     private EditText mNote;
     private TextView mNFCContent;
-    private Button mBtn;
-    private AlertDialog dialog;
     private Context context;
     Button btnBack2,btnComments;
     CharSequence getEnterAcitvityTime,getLeaveAcitvityTime;
@@ -264,97 +257,106 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
                 tag = results[i];
                 if (value.equals(tag)) {
                     learn_id = results[i-1];
-                    new GetLearnDetails().execute();
-                   setContentView(R.layout.learning);
 
-                    Calendar mCal = Calendar.getInstance();
-                    getEnterAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
-                    Log.d("CurrentTime" , ""+getEnterAcitvityTime);
-                    final Date   curDate   =   new   Date(System.currentTimeMillis());
-                    new GetItemDetails().execute();
-
-                    btnBack2 = (Button)findViewById(R.id.btnBackToLearn);
-                    btnBack2.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent i = new Intent();
-                            i.setClass(LearnActivity.this,LearnActivity.class);
-                            startActivity(i);
-                            finish();
-                            Calendar mCal = Calendar.getInstance();
-                            getLeaveAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
-                            Log.d("LeaveCurrentTime" , ""+getLeaveAcitvityTime);
-                            Date   endDate   =   new   Date(System.currentTimeMillis());
-
-                            learningTime_local = endDate.getTime() - curDate.getTime() ;
-                            Long sec=learningTime_local/1000;
-
-                            //是否新增新的學習資料或是更新學習資料
-                            if(itemsForLearning[0] != null && itemsForUser[0] != null) {
-                                for (int j = 0; j < products.length(); j++) {
-                                    if (itemsForLearning[j].equals(learn_id)
-                                            && itemsForUser[j].equals(Profile.getCurrentProfile().getId())) {
-                                        int watch_numbers_final = Integer.valueOf(watch_numbers_local);
-                                        watch_numbers_final++;
-                                        watch_numbers_local = String.valueOf(watch_numbers_final);
-
-                                        long watch_time_final = Integer.valueOf(watch_time_local);
-                                        watch_time_final += sec ;
-                                        watch_time_local = String.valueOf(watch_time_final);
-
-                                        Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
-                                        new SaveItem().execute();
-                                        Log.d("相同" , "嘿嘿！！");
-                                        break;
-
-                                    }else {
-                                        if (j == products.length()-1){
-                                            watch_numbers_local = "0";
-                                            watch_time_local = "0";
-                                            int watch_numbers_final = 0;
-                                            watch_numbers_final =Integer.valueOf(watch_numbers_local);
-                                            watch_numbers_final++;
-                                            watch_numbers_local = String.valueOf(watch_numbers_final);
-
-                                            long watch_time_final = 0;
-                                            watch_time_final = Integer.valueOf(watch_time_local);
-                                            watch_time_final += sec ;
-                                            watch_time_local = String.valueOf(watch_time_final);
-                                            Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
-                                            new CreateNewItem().execute();
-                                            Log.d("不同" , "product");
-                                        }
-                                    }
-                                }
-                            }else{
-                                int watch_numbers_final = Integer.valueOf(watch_numbers_local);
-                                watch_numbers_final++;
-                                watch_numbers_local = String.valueOf(watch_numbers_final);
-
-                                long watch_time_final = Integer.valueOf(watch_time_local);
-                                watch_time_final += sec ;
-                                watch_time_local = String.valueOf(watch_time_final);
-                                Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
-                                new CreateNewItem().execute();
-                                Log.d("不同" , "null");
-                            }
+                    //new
+                    Intent in = new Intent();
+                    in.putExtra("learn_id",learn_id);
+                    in.setClass(LearnActivity.this , LearnInNFCActivity.class);
+                    startActivity(in);
+                    finish();
 
 
-                        }
-                    });
-                    btnComments = (Button)findViewById(R.id.btnComments);
-                    btnComments.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent i = new Intent();
-                            i.setClass(LearnActivity.this , CommentsActivity.class);
-                            i.putExtra("learn_id" , learn_id);
-                            i.putExtra("descriptionOfStudent" , descriptionOfStudent);
-                            i.putExtra("evaluation",evaluation);
-                            startActivity(i);
-                            finish();
-                        }
-                    });
+//                    new GetLearnDetails().execute();
+//                   setContentView(R.layout.learning);
+//
+//                    Calendar mCal = Calendar.getInstance();
+//                    getEnterAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
+//                    Log.d("CurrentTime" , ""+getEnterAcitvityTime);
+//                    final Date   curDate   =   new   Date(System.currentTimeMillis());
+//                    new GetItemDetails().execute();
+//
+//                    btnBack2 = (Button)findViewById(R.id.btnBackToLearn);
+//                    btnBack2.setOnClickListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent i = new Intent();
+//                            i.setClass(LearnActivity.this,LearnActivity.class);
+//                            startActivity(i);
+//                            finish();
+//                            Calendar mCal = Calendar.getInstance();
+//                            getLeaveAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
+//                            Log.d("LeaveCurrentTime" , ""+getLeaveAcitvityTime);
+//                            Date   endDate   =   new   Date(System.currentTimeMillis());
+//
+//                            learningTime_local = endDate.getTime() - curDate.getTime() ;
+//                            Long sec=learningTime_local/1000;
+//
+//                            //是否新增新的學習資料或是更新學習資料
+//                            if(itemsForLearning[0] != null && itemsForUser[0] != null) {
+//                                for (int j = 0; j < products.length(); j++) {
+//                                    if (itemsForLearning[j].equals(learn_id)
+//                                            && itemsForUser[j].equals(Profile.getCurrentProfile().getId())) {
+//                                        int watch_numbers_final = Integer.valueOf(watch_numbers_local);
+//                                        watch_numbers_final++;
+//                                        watch_numbers_local = String.valueOf(watch_numbers_final);
+//
+//                                        long watch_time_final = Integer.valueOf(watch_time_local);
+//                                        watch_time_final += sec ;
+//                                        watch_time_local = String.valueOf(watch_time_final);
+//
+//                                        Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
+//                                        new SaveItem().execute();
+//                                        Log.d("相同" , "嘿嘿！！");
+//                                        break;
+//
+//                                    }else {
+//                                        if (j == products.length()-1){
+//                                            watch_numbers_local = "0";
+//                                            watch_time_local = "0";
+//                                            int watch_numbers_final = 0;
+//                                            watch_numbers_final =Integer.valueOf(watch_numbers_local);
+//                                            watch_numbers_final++;
+//                                            watch_numbers_local = String.valueOf(watch_numbers_final);
+//
+//                                            long watch_time_final = 0;
+//                                            watch_time_final = Integer.valueOf(watch_time_local);
+//                                            watch_time_final += sec ;
+//                                            watch_time_local = String.valueOf(watch_time_final);
+//                                            Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
+//                                            new CreateNewItem().execute();
+//                                            Log.d("不同" , "product");
+//                                        }
+//                                    }
+//                                }
+//                            }else{
+//                                int watch_numbers_final = Integer.valueOf(watch_numbers_local);
+//                                watch_numbers_final++;
+//                                watch_numbers_local = String.valueOf(watch_numbers_final);
+//
+//                                long watch_time_final = Integer.valueOf(watch_time_local);
+//                                watch_time_final += sec ;
+//                                watch_time_local = String.valueOf(watch_time_final);
+//                                Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
+//                                new CreateNewItem().execute();
+//                                Log.d("不同" , "null");
+//                            }
+//
+//
+//                        }
+//                    });
+//                    btnComments = (Button)findViewById(R.id.btnComments);
+//                    btnComments.setOnClickListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent i = new Intent();
+//                            i.setClass(LearnActivity.this , CommentsActivity.class);
+//                            i.putExtra("learn_id" , learn_id);
+//                            i.putExtra("descriptionOfStudent" , descriptionOfStudent);
+//                            i.putExtra("evaluation",evaluation);
+//                            startActivity(i);
+//                            finish();
+//                        }
+//                    });
 
 
                 }

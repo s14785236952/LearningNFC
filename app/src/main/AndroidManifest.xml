@@ -95,7 +95,8 @@
         <activity android:name=".RankScoreActivity" />
         <activity android:name=".ResultForWrongExamActivity" />
         <activity android:name=".RankLearnActivity" />
-        <activity android:name=".ResultForHomeworkActivity"></activity>
+        <activity android:name=".ResultForHomeworkActivity" />
+        <activity android:name=".LearnInNFCActivity"></activity>
     </application>
 
 </manifest>

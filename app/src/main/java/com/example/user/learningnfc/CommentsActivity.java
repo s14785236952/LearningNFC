@@ -233,7 +233,8 @@ public class CommentsActivity extends Activity {
     {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             Intent i = new Intent();
-            i.setClass(CommentsActivity.this , LearnActivity.class);
+            i.putExtra("learn_id",learn_id);
+            i.setClass(CommentsActivity.this , LearnInNFCActivity.class);
             startActivity(i);
             finish();
 
