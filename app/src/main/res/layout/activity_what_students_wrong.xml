@@ -8,13 +8,21 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.user.learningnfc.WhatStudentsWrongActivity">
-
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="錯的題目為:"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:textSize="17dip"
+        android:layout_marginTop="20dp"/>
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp"
+        />
 
 </RelativeLayout>

@@ -83,7 +83,6 @@ public class NewProductActivity extends Activity {
         inputopc = (EditText) findViewById(R.id.inputopc);
         inputopd = (EditText) findViewById(R.id.inputopd);
         inputdesc = (EditText) findViewById(R.id.inputdesc);
-        inputsuggest = (EditText)findViewById(R.id.inputsuggest);
 
         // Create button
         Button btnCreateProduct = (Button) findViewById(R.id.btnCreateProduct);

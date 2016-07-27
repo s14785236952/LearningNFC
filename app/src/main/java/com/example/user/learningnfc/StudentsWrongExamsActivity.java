@@ -41,7 +41,7 @@ public class StudentsWrongExamsActivity extends ListActivity {
 
     private  String[] results;
     private String wrongExamsScore;
-
+    int length;
 
     // products JSONArray
     JSONArray wrong_exams = null;
@@ -70,17 +70,16 @@ public class StudentsWrongExamsActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-                String exam_id = ((TextView) view.findViewById(R.id.pid)).getText()
-                        .toString();
 
+                String pid = ((TextView) view.findViewById(R.id.pid)).getText()
+                        .toString();
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(),
                         WhatStudentsWrongActivity.class);
-                // sending pid to next activity
-                in.putExtra("exam_id", exam_id);
-
-                // starting new activity and expecting some response back
-                startActivityForResult(in, 101);
+                in.putExtra("exam_id",pid);
+                Log.d("exam_id","is"+pid);
+                startActivity(in);
+                finish();
             }
         });
 
@@ -147,6 +146,7 @@ public class StudentsWrongExamsActivity extends ListActivity {
                         // Storing each json item in variable
                         String id = c.getString("exam_id");
                         String wrongExams = c.getString("wrongExams");
+                        String time = c.getString("time");
 
                         Log.d("wrongExams" , wrongExams);
                         // creating new HashMap
@@ -159,13 +159,14 @@ public class StudentsWrongExamsActivity extends ListActivity {
                         String[] exam_items = wrongExams.split(",");
                         // items.length 是所有項目的個數
                         results = new String[exam_items.length];
+                        length =exam_items.length;
                         // 將結果放入 results，
                         // 並利用 Integer.parseInt 來將整數字串轉換為 int
                         for (int k = 0; k < exam_items.length; k++) {
                             results[k] = exam_items[k].trim();
                             Log.d("exam_items" , ""+results[k]);
                         }
-                        map.put("wrongExams", results[0]+" : "+results[exam_items.length-1]+"分");
+                        map.put("wrongExams", results[0]+" : "+results[exam_items.length-1]+"分"+"，總共花了"+time+"秒鐘");
                         Log.d("result" , ""+results[0]);
                         // adding HashList to ArrayList
                         wrongExamsList.add(map);

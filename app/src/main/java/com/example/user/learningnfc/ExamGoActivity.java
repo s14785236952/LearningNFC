@@ -109,6 +109,7 @@ public class ExamGoActivity extends AppCompatActivity {
     public static String exam_desc8;
     public static String exam_desc9;
     public static String exam_desc10;
+    String time;
 
     public static ArrayList<String> mylist = new ArrayList();
 
@@ -148,6 +149,7 @@ public class ExamGoActivity extends AppCompatActivity {
                     Date   endDate   =   new   Date(System.currentTimeMillis());
                     learningTime_local = endDate.getTime() - curDate.getTime() ;
                     Long sec=learningTime_local/1000;
+                    time = Long.toString(sec);
                     mylist.add(Profile.getCurrentProfile().getLastName());
                     mylist.add(Profile.getCurrentProfile().getFirstName());
                     wrongExams += Profile.getCurrentProfile().getLastName();
@@ -1073,6 +1075,8 @@ public class ExamGoActivity extends AppCompatActivity {
             // Building Parameters
             List<NameValuePair> params1 = new ArrayList<NameValuePair>();
             params1.add(new BasicNameValuePair("wrongExams",wrongExams));
+            params1.add(new BasicNameValuePair("time",time));
+
             Log.d("wrongExams" , wrongExams);
 
 
