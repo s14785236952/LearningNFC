@@ -43,7 +43,7 @@ public class CommentsActivity extends Activity {
     private static String url_get_users = "http://163.21.245.192/android_connect/get_all_users.php";
 
 
-    Button btn_newComments ;
+    Button btn_newComments, btn_backToLearning ;
 
     String learn_id;
     String descriptionOfStudent;
@@ -65,7 +65,6 @@ public class CommentsActivity extends Activity {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mRecyclerView.setHasFixedSize(true);
@@ -80,8 +79,7 @@ public class CommentsActivity extends Activity {
         learn_id = i.getStringExtra("learn_id");
         descriptionOfStudent = i.getStringExtra("descriptionOfStudent");
         evaluation = i.getStringExtra("evaluation");
-        Comments comment = new Comments("姓名", "註解", "");
-        commentList.add(comment);
+
         new LoadAllComments().execute();
 
 
@@ -114,6 +112,15 @@ public class CommentsActivity extends Activity {
             }
 
         });
+
+//        btn_backToLearning = (Button)findViewById(R.id.btn_backToLearning);
+//        btn_backToLearning.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                setContentView(R.layout.learning);
+//            }
+//        });
+
     }
 
     class LoadAllComments extends AsyncTask<String, String, String> {
@@ -229,7 +236,7 @@ public class CommentsActivity extends Activity {
             i.setClass(CommentsActivity.this , LearnActivity.class);
             startActivity(i);
             finish();
-            setContentView(R.layout.learning);
+
         }
         return super.onKeyDown(keyCode, event);
     }

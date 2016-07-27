@@ -47,10 +47,10 @@ public class ViewHistoryActivity extends ListActivity {
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        new LoadAllHomeworks().execute();
+        new LoadAllHistory().execute();
     }
 
-    class LoadAllHomeworks extends AsyncTask<String, String, String> {
+    class LoadAllHistory extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog

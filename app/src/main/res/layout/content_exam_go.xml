@@ -574,7 +574,14 @@
                     android:text=""
                     android:id="@+id/radioButton4_10" />
             </RadioGroup>
-
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:0"
+                android:textSize="30sp"
+                >
+            </TextView>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

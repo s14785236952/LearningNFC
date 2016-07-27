@@ -94,8 +94,9 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
     private String image;
     String tag;
     String tagString = "";
-    String[] results;
+    String[] results,results_student;
     String[] items;
+    JSONArray students = null;
     private static String[] itemsForLearning = new String[100];
     private static String[] itemsForUser = new String[100];
 
@@ -111,7 +112,9 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
     private static String url_create_item = "http://163.21.245.192/android_connect/create_item.php";
     private static String url_all_items = "http://163.21.245.192/android_connect/get_all_items.php";
     private static String url_update_item = "http://163.21.245.192/android_connect/update_item.php";
+    private static String url_update_student = "http://163.21.245.192/android_connect/update_student.php";
     private static String url_get_item_details = "http://163.21.245.192/android_connect/get_item_details.php";
+    private static String url_all_students = "http://163.21.245.192/android_connect/get_all_students.php";
 
 
     public static long learningTime_local ;
@@ -509,10 +512,15 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
                         JSONObject json = jsonParser.makeHttpRequest(
                                 url_learning_details, "GET", params);
 
-                        // check your log for json response
-//                        Log.d("Single Leanring Details", json.toString());
+                        // Building Parameters
+                        List<NameValuePair> params_student = new ArrayList<NameValuePair>();
+                        // getting JSON string from URL
+                        JSONObject json_student = jsonParser.makeHttpRequest(url_all_students, "GET", params_student);
 
-                        // json success tag
+                        // check your log for json response
+                        Log.d("All student Details", json_student.toString());
+
+
                         success = json.getInt("success");
                         if (success == 1) {
                             // successfully received product details
@@ -531,6 +539,47 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
                             image = product.getString("image");
                             img2 = (ImageView)findViewById(R.id.img_learn);
                             img2.setImageBitmap(ImgUtils.getBitmapFromURL("http://163.21.245.192/android_connect/uploadedimages/"+image));
+
+                            students = json_student.getJSONArray("students");
+
+                            for (int i = 0; i < students.length(); i++) {
+                                JSONObject c = students.getJSONObject(i);
+                                String pid_student = c.getString("pid");
+                                String action_completed = c.getString("action_completed");
+                                String species = c.getString("species");
+                                String student = c.getString("student");
+
+                                if (student.equals(Profile.getCurrentProfile().getLastName()
+                                        +Profile.getCurrentProfile().getFirstName())){
+
+                                    String[] student_items = species.split(",");
+                                    if (student_items.length !=0){
+                                    results_student = new String[student_items.length];
+                                    for (int k = 0; k < student_items.length; k++) {
+                                        results_student[k] = student_items[k].trim();
+
+                                        if(results_student[k].equals(String.valueOf(learn_id))){
+                                            break;
+                                        }else if (student_items.length == k+1){
+                                            species += ","+learn_id;
+                                            action_completed = String.valueOf(Integer.parseInt(action_completed)+1);
+                                            }
+                                        }
+                                    } else{
+                                        species += learn_id;
+                                       action_completed = String.valueOf(Integer.parseInt(action_completed)+1);
+                                    }
+
+                                }
+                                List<NameValuePair> params_updateStudent = new ArrayList<NameValuePair>();
+                                params_updateStudent.add(new BasicNameValuePair("student", student));
+                                params_updateStudent.add(new BasicNameValuePair("action_completed", action_completed));
+                                params_updateStudent.add(new BasicNameValuePair("species", species));
+                                params_updateStudent.add(new BasicNameValuePair("pid", pid_student));
+                                JSONObject json_student1 = jsonParser.makeHttpRequest(url_update_student,
+                                        "POST", params_updateStudent);
+
+                            }
 
                         }else{
                             // product with pid not found
@@ -820,6 +869,88 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
             pDialog.dismiss();
         }
     }
+
+
+    class GetProductDetails extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(LearnActivity.this);
+            pDialog.setMessage("請稍候...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Getting product details in background thread
+         * */
+        protected String doInBackground(String... params) {
+
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+                    int success;
+                    try {
+                        // Building Parameters
+                        List<NameValuePair> params_student = new ArrayList<NameValuePair>();
+                        // getting JSON string from URL
+                        JSONObject json_student = jsonParser.makeHttpRequest(url_all_students, "GET", params_student);
+
+                        // check your log for json response
+                        Log.d("Single student Details", json_student.toString());
+
+                        // json success tag
+                        success = json_student.getInt("success");
+                        if (success == 1) {
+
+
+                            students = json_student.getJSONArray("students");
+
+                            for (int i = 0; i < students.length(); i++) {
+                                JSONObject c = students.getJSONObject(i);
+
+                                // Storing each json item in variable
+                                int pidInStudents = c.getInt("homework_pid");
+                                String student = c.getString("student");
+                                Log.d("hello",pidInStudents+student+"   "+Profile.getCurrentProfile().getLastName()
+                                        +Profile.getCurrentProfile().getFirstName());
+
+                                if (student.equals(Profile.getCurrentProfile().getLastName()
+                                        +Profile.getCurrentProfile().getFirstName())){
+
+                                    break;
+                                }
+
+                            }
+
+
+                        }else{
+                            // product with pid not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once got all details
+            pDialog.dismiss();
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

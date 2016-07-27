@@ -42,6 +42,22 @@
         android:id="@+id/inputScore"
         android:layout_below="@+id/score"
         android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="你所花的時間為: "
+            android:id="@+id/TextTime"
+            android:layout_below="@+id/inputScore"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="  "
+            android:id="@+id/inputTime"
+            android:layout_below="@+id/TextTime"
+            android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,14 +65,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="你錯的題目有："
         android:id="@+id/textView4"
-        android:layout_below="@+id/inputScore"
+        android:layout_below="@+id/TextTime"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="89dp" />
+        android:layout_marginTop="30dp" />
         <ListView
             android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"/>
+            android:layout_marginTop="30dp"/>
     </LinearLayout>
     </ScrollView>
     </TableLayout>

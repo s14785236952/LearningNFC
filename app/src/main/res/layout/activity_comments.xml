@@ -8,10 +8,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.user.learningnfc.CommentsActivity">
+    <Button android:id="@+id/btn_backToLearning"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="返回"/>
+
     <Button android:id="@+id/btn_newComments"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="留言"/>
+        android:text="留言"
+        android:layout_below="@+id/btn_backToLearning"/>
+
     <view
         android:id="@+id/recycler_view"
         class="android.support.v7.widget.RecyclerView"

@@ -1,30 +1,32 @@
 package com.example.user.learningnfc;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.facebook.Profile;
 
 public class UnfinishworkActivity extends ListActivity {
 
@@ -34,63 +36,69 @@ public class UnfinishworkActivity extends ListActivity {
     // Creating JSON Parser object
     JSONParser jParser = new JSONParser();
 
-    ArrayList<HashMap<String, String>> productsList;
+    ArrayList<HashMap<String, String>> homeworksList;
 
-    TextView inputscore;
 
-    private static String url_all_products = "http://163.21.245.192/android_connect/get_all_products.php";
-    private static final String url_product_details = "http://163.21.245.192/android_connect/get_product_details.php";
+    private static String url_all_students = "http://163.21.245.192/android_connect/get_all_students.php";
+    private static String url_all_homeworks = "http://163.21.245.192/android_connect/get_all_homeworks.php";
+
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_PRODUCT = "product";
+    private static final String TAG_HOMEWORKS = "homeworks";
     private static final String TAG_PID = "pid";
     private static final String TAG_NAME = "name";
+    private static final String TAG_DESC = "description";
+    private static final String TAG_SCHEDULE = "schedule";
+
 
     // products JSONArray
-    JSONArray products = null;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_unfinishwork);
+    JSONArray homeworks,students = null;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_homeworks);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        // Hashmap for ListView
+        homeworksList = new ArrayList<HashMap<String, String>>();
 
-        productsList = new ArrayList<HashMap<String, String>>();
-
-        new LoadUnfinishWork().execute();
+        // Loading products in Background Thread
+        new LoadAllHomeworks().execute();
 
         // Get listview
-        ListView lv_result = getListView();
+        ListView lv = getListView();
 
         // on seleting single product
         // launching Edit Product Screen
-        lv_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-                String pid = ((TextView) view.findViewById(R.id.pid_result)).getText()
+                String pid = ((TextView) view.findViewById(R.id.pid)).getText()
                         .toString();
 
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(),
-                        ResultForAnswerActivity.class);
+                        ResultForHomeworkActivity.class);
                 // sending pid to next activity
                 in.putExtra(TAG_PID, pid);
-                startActivity(in);
-                finish();
+
+                // starting new activity and expecting some response back
+                startActivityForResult(in, 101);
             }
         });
 
     }
 
+
     /**
      * Background Async Task to Load all product by making HTTP Request
      * */
-    class LoadUnfinishWork extends AsyncTask<String, String, String> {
+    class LoadAllHomeworks extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -99,7 +107,7 @@ public class UnfinishworkActivity extends ListActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(UnfinishworkActivity.this);
-            pDialog.setMessage("Loading Wrong Exams. Please wait...");
+            pDialog.setMessage("Loading exams. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -111,32 +119,49 @@ public class UnfinishworkActivity extends ListActivity {
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            Log.d("wrong_number", Integer.toString(ExamGoActivity.wrong_exams_number));
-            if(ExamGoActivity.wrong_exams_number != 0 ){
-                for (int i = 2 ; i <= ExamGoActivity.wrong_exams_number + 1 ; i++){
-                    params.add(new BasicNameValuePair("pid", ExamGoActivity.mylist.get(i)));
-                    Log.d("mylist" , ExamGoActivity.mylist.get(i));
-                    JSONObject json = jParser.makeHttpRequest(url_product_details, "GET", params);
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_all_homeworks, "GET", params);
+
+            // Building Parameters
+            List<NameValuePair> params_student = new ArrayList<NameValuePair>();
+            // getting JSON string from URL
+            JSONObject json_student = jParser.makeHttpRequest(url_all_students, "GET", params_student);
+
+            // Check your log cat for JSON reponse
+            Log.d("All Homeworks: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+                if (success == 1) {
+                    // products found
+                    // Getting Array of Products
+                    homeworks = json.getJSONArray(TAG_HOMEWORKS);
+
+                    // looping through All Products
+                    for (int i = 0; i < homeworks.length(); i++) {
+                        JSONObject c = homeworks.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String id = c.getString(TAG_PID);
+                        String name = c.getString(TAG_NAME);
+                        String action_needed = c.getString("action_needed");
 
 
-                    // Check your log cat for JSON reponse
-                    Log.d("All Wrong Exams ", json.toString());
-
-                    try {
-                        // Checking for SUCCESS TAG
-                        int success = json.getInt(TAG_SUCCESS);
-                        if (success == 1) {
-                            // products found
-                            // Getting Array of Products
-                            products = json.getJSONArray(TAG_PRODUCT);
-
-                            // looping through All Products
-                            for (int k = 0; k < products.length(); k++) {
-                                JSONObject c = products.getJSONObject(k);
-
-                                // Storing each json item in variable
-                                String id = c.getString(TAG_PID);
-                                String name = c.getString(TAG_NAME);
+                        students = json_student.getJSONArray("students");
+                        for (int k = 0; k < students.length(); k++) {
+                            JSONObject c2 = students.getJSONObject(k);
+                            String homework_pid = c2.getString("homework_pid");
+                            String action_completed = c2.getString("action_completed");
+                            String student = c2.getString("student");
+                            Log.d("id: ",id+" : "+homework_pid);
+                            Log.d("student: ",student+" : "+Profile.getCurrentProfile().getLastName()
+                                    + Profile.getCurrentProfile().getFirstName());
+                            Log.d("count: ",action_completed+" : "+action_needed);
+                            if (homework_pid.equals(id) && student.equals(Profile.getCurrentProfile().getLastName()
+                                    + Profile.getCurrentProfile().getFirstName()) && action_completed.equals(action_needed)) {
+                                break;
+                            }else if (students.length() == k+1){
 
                                 // creating new HashMap
                                 HashMap<String, String> map = new HashMap<String, String>();
@@ -146,25 +171,25 @@ public class UnfinishworkActivity extends ListActivity {
                                 map.put(TAG_NAME, name);
 
                                 // adding HashList to ArrayList
-                                productsList.add(map);
-
+                                homeworksList.add(map);
+                                break;
                             }
-                        } else {
-                            // no products found
-                            // Launch Add New product Activity
-                            Intent intent = new Intent(getApplicationContext(),
-                                    ExamActivity.class);
-                            // Closing all previous activities
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
+
+                    }
+                } else {
+                    // no products found
+                    // Launch Add New product Activity
+                    Intent i = new Intent(getApplicationContext(),
+                            NewProductActivity.class);
+                    // Closing all previous activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            // getting JSON string from URL
 
             return null;
         }
@@ -182,10 +207,10 @@ public class UnfinishworkActivity extends ListActivity {
                      * Updating parsed JSON data into ListView
                      * */
                     ListAdapter adapter = new SimpleAdapter(
-                            UnfinishworkActivity.this, productsList,
-                            R.layout.list_item_result, new String[] { TAG_PID,
+                            UnfinishworkActivity.this, homeworksList,
+                            R.layout.list_item, new String[] { TAG_PID,
                             TAG_NAME},
-                            new int[] { R.id.pid_result, R.id.name_result });
+                            new int[] { R.id.pid, R.id.name });
                     // updating listview
                     setListAdapter(adapter);
                 }
@@ -199,7 +224,6 @@ public class UnfinishworkActivity extends ListActivity {
         pDialog.dismiss();
         super.onDestroy();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)

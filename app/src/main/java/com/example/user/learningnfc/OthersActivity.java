@@ -57,6 +57,17 @@ public class OthersActivity extends AppCompatActivity
                 finish();
             }
         });
+
+        btnRankLearn =(Button)findViewById(R.id.btnRankLearn);
+        btnRankLearn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(OthersActivity.this, RankLearnActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override

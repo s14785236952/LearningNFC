@@ -1,6 +1,9 @@
 package com.example.user.learningnfc;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -10,12 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import java.util.List;
 
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.facebook.Profile;
 
 public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.CommentsViewHolder> {
     public static Context mCtx;
     public static List<Comments> comments;
-
+    String evaluation;
     private PopupMenu menu;
 
     public static class CommentsViewHolder extends RecyclerView.ViewHolder {
@@ -49,7 +55,7 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.Commen
 
     @Override
     public void onBindViewHolder(final CommentsViewHolder holder, int position) {
-        Comments comment = comments.get(position);
+        final Comments comment = comments.get(position);
         holder.student_name.setText(comment.getName());
         holder.message.setText(comment.getMessage());
         holder.teacher_score.setText(comment.getTeacher_score());
@@ -61,8 +67,18 @@ public class commentsAdapter extends RecyclerView.Adapter<commentsAdapter.Commen
                 menu.inflate(R.menu.menu_comment);
                 menu.getMenu().findItem(R.id.action_modify).setVisible(true);
                 menu.getMenu().findItem(R.id.action_delete).setVisible(true);
-
                 menu.show();
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.action_modify){
+
+                        }else if (item.getItemId() == R.id.action_delete){
+                            comments.remove(item);
+                        }
+                        return true;
+                    }
+                });
             }
 
         });

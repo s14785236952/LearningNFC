@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,10 @@ import java.util.Date;
 import java.util.List;
 
 public class ExamGoActivity extends AppCompatActivity {
+
+
+    private Long startTime;
+    private Handler handler = new Handler();
 
     TextView t_name;
     RadioButton rb1;
@@ -109,7 +114,7 @@ public class ExamGoActivity extends AppCompatActivity {
     public static String exam_desc8;
     public static String exam_desc9;
     public static String exam_desc10;
-    String time;
+    public static String time;
 
     public static ArrayList<String> mylist = new ArrayList();
 
@@ -127,6 +132,13 @@ public class ExamGoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         new LoadExam().execute();
+
+        //取得目前時間
+        startTime = System.currentTimeMillis();
+        //設定定時要執行的方法
+        handler.removeCallbacks(updateTimer);
+        //設定Delay的時間
+        handler.postDelayed(updateTimer, 1000);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -134,6 +146,7 @@ public class ExamGoActivity extends AppCompatActivity {
         getEnterAcitvityTime = DateFormat.format("kk:mm:ss", mCal.getTime());
         Log.d("CurrentTime" , ""+getEnterAcitvityTime);
         final Date curDate   =   new   Date(System.currentTimeMillis());
+
         Button btn_examsubmit = (Button)findViewById(R.id.btn_examsubmmit);
             btn_examsubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1110,6 +1123,20 @@ public class ExamGoActivity extends AppCompatActivity {
             pDialog.dismiss();
         }
     }
+
+    //固定要執行的方法
+    private Runnable updateTimer = new Runnable() {
+        public void run() {
+            final TextView time = (TextView) findViewById(R.id.timer);
+            Long spentTime = System.currentTimeMillis() - startTime;
+            //計算目前已過分鐘數
+            Long minius = (spentTime/1000)/60;
+            //計算目前已過秒數
+            Long seconds = (spentTime/1000) % 60;
+            time.setText(minius+":"+seconds);
+            handler.postDelayed(this, 1000);
+        }
+    };
 
 
         @Override

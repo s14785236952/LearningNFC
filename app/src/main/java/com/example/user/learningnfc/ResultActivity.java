@@ -36,7 +36,7 @@ public class ResultActivity extends ListActivity {
 
     ArrayList<HashMap<String, String>> productsList;
 
-    TextView inputscore;
+    TextView inputscore,inputTime;
     private static String url_all_products = "http://163.21.245.192/android_connect/get_all_products.php";
 
     private static final String url_product_details = "http://163.21.245.192/android_connect/get_product_details.php";
@@ -54,6 +54,8 @@ public class ResultActivity extends ListActivity {
         setContentView(R.layout.activity_result);
         inputscore = (TextView)findViewById(R.id.inputScore);
         inputscore.setText(Integer.toString(ExamGoActivity.exam_score));
+        inputTime = (TextView)findViewById(R.id.inputTime);
+        inputTime.setText(ExamGoActivity.time+"秒");
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
