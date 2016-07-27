@@ -35,6 +35,14 @@
                 android:textColor="@color/black_color"
                 />
 
+            <Button
+                android:id="@+id/option_button"
+                android:background="@drawable/ic_more_vert_black_24dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginRight="8dp"
+                android:layout_alignParentRight="true"
+                />
             <!-- TODO: More button -->
 
         </RelativeLayout>
