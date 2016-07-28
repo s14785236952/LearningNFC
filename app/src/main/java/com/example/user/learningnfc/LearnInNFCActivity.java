@@ -118,7 +118,7 @@ public class LearnInNFCActivity extends AppCompatActivity {
                                 watch_time_final = Integer.valueOf(watch_time_local);
                                 watch_time_final += sec ;
                                 watch_time_local = String.valueOf(watch_time_final);
-                                Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
+                                Log.d("GET2" ,watch_time_local+ "  , "+watch_numbers_local );
                                 new CreateNewItem().execute();
                                 Log.d("不同" , "product");
                             }
@@ -132,7 +132,7 @@ public class LearnInNFCActivity extends AppCompatActivity {
                     long watch_time_final = Integer.valueOf(watch_time_local);
                     watch_time_final += sec ;
                     watch_time_local = String.valueOf(watch_time_final);
-                    Log.d("GET" ,watch_time_local+ "  , "+watch_numbers_local );
+                    Log.d("GET3" ,watch_time_local+ "  , "+watch_numbers_local );
                     new CreateNewItem().execute();
                     Log.d("不同" , "null");
                 }
@@ -206,10 +206,26 @@ public class LearnInNFCActivity extends AppCompatActivity {
                         // check your log for json response
                         Log.d("All student Details", json_student.toString());
 
-
+                        List<NameValuePair> params_items = new ArrayList<NameValuePair>();
+                        JSONObject json_items = jsonParser.makeHttpRequest(url_all_items, "GET", params_items);
                         success = json.getInt("success");
                         if (success == 1) {
 
+                            products = json_items.getJSONArray("items");
+
+                            // looping through All Products
+                            for (int i = 0; i < products.length(); i++) {
+                                JSONObject c = products.getJSONObject(i);
+
+                                // Storing each json item in variable
+                                String learn_id_server = c.getString("learning");
+                                String user_server = c.getString("user");
+                                itemsForLearning[i] = learn_id_server;
+                                itemsForUser[i] = user_server;
+                                Log.d("hahahahaha" , itemsForLearning[i]);
+
+
+                            }
                             // successfully received product details
                             JSONArray productObj2 = json2
                                     .getJSONArray("item"); // JSON Array

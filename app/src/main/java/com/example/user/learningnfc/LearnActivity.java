@@ -402,20 +402,20 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
          */
         protected String doInBackground(String... args) {
             // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            List<NameValuePair> params_items = new ArrayList<NameValuePair>();
             List<NameValuePair> params_learning = new ArrayList<NameValuePair>();
             // getting JSON string from URL
             JSONObject json_learning = jParser.makeHttpRequest(url_all_learnings, "GET", params_learning);
-            JSONObject json = jParser.makeHttpRequest(url_all_items, "GET", params);
+            JSONObject json_items = jParser.makeHttpRequest(url_all_items, "GET", params_items);
             // Check your log cat for JSON reponse
-           Log.d("All Learnings: ", json.toString());
+           Log.d("All Learnings: ", json_items.toString());
 
 
 
             try {
                 // Checking for SUCCESS TAG
                 int success_learning = json_learning.getInt("success");
-                int success = json.getInt("success");
+                int success = json_items.getInt("success");
                 if (success_learning == 1) {
                     // products found
                     // Getting Array of Products
@@ -438,7 +438,7 @@ public class LearnActivity extends AppCompatActivity implements NavigationView.O
                 if (success == 1) {
                     // products found
                     // Getting Array of Products
-                    products = json.getJSONArray("items");
+                    products = json_items.getJSONArray("items");
 
                     // looping through All Products
                     for (int i = 0; i < products.length(); i++) {
